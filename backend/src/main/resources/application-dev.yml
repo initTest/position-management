@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: position-management-system
+  datasource:
+    url: ${DB_URL:jdbc:h2:mem:positiondb}
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:password}
+    driverClassName: ${DB_DRIVER:org.h2.Driver}
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+    defer-datasource-initialization: true
+    show-sql: ${SHOW_SQL:true}
+  h2:
+    console:
+      enabled: ${H2_CONSOLE_ENABLED:true}
+      path: ${H2_CONSOLE_PATH:/h2-console}
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+
+server:
+  port: ${SERVER_PORT:8080}
+
+application:
+  security:
+    api-key: ${API_KEY:1234567890}
+
+logging:
+  level:
+    com.assessment.position: ${LOG_LEVEL:DEBUG}
+    org.springframework: INFO
+
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173}
+  allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS}
+  allowed-headers: ${CORS_ALLOWED_HEADERS:*}
+  max-age: ${CORS_MAX_AGE:3600}
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: method
+    disable-swagger-default-url: true
+  show-actuator: false
+  packages-to-scan: com.assessment.position.controller
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false 
